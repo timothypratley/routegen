@@ -160,6 +160,8 @@
 (defn functions
   "Get the public functions of a namespace"
   [n]
-  (filter fn? (ns-publics n)))
+  (filter ifn? (ns-publics n)))
+
+
 
 
