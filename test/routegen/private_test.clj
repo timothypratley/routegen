@@ -16,11 +16,12 @@
        (fact (type (clojure.edn/read-string "this is a string")) => clojure.lang.Symbol)
        (fact (parse "ad1" Integer) => (throws Exception))
        (fact (err-parse "ad1" (-> #'foo meta :arglists first first)) => (comp string? second))
-       ;; TODO: session is not set... do we even want to check sessions or is that a separate concern?
-       ;(fact (call #'foo {:params {:x "1"}} identity) => 2)
+       (fact (call #'foo (fn [request content] content) {:params {:x "1"}}) => 2)
        (fact (let [f #'inc] (:doc (meta f))) => string?)
        (fact (-> #'foo meta :arglists first first meta :tag) => 'Integer)
        (fact (-> #'inc meta) => map?))
+
+
 
 
 

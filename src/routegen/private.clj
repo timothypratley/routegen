@@ -85,24 +85,6 @@
         {:reqId (reqId (get-in request [:params :tqx]))
          :table (tabulate content)}))
 
-;TODO: this is application specific and should be lifted out of here
-;additionally it causes tests to fail because session is not defined
-(defn with-401
-  "Catch and respond on 401 exception"
-  [request fmt method args]
-  (if-not (session/get :username)
-    (status 401 "Please login")
-    (try+
-     (fmt request (apply method args))
-     ;TODO: wish there was a nicer way to pass on 401
-     (catch [:status 401] []
-       (status 401 "Please login"))
-     (catch Exception e
-       (if (= "java.io.IOException: Authentication failure"
-              (.getMessage e))
-         (status 401 "Please login")
-         (throw e))))))
-
 (defn doc-str
   "Basic doc string for a var (usually a function)"
   [v]
@@ -136,7 +118,7 @@
 (defn call
   "Calls f with arguments taken from the request parameters.
   Returns a 400 with a helpful error message if params do not match."
-  [f request fmt]
+  [f fmt request]
   (let [params (dissoc (request :params) :tqx)
         request-arity (count (keys params))
         arglists (-> f meta :arglists)
@@ -155,12 +137,14 @@
                (some identity parse-errors) (clojure.string/join \newline parse-errors))]
     (if error
       (status 400 (str error \newline (doc-str f)))
-      (with-401 request fmt f parse-vals))))
+      (fmt request (apply f parse-vals)))))
 
 (defn functions
   "Get the public functions of a namespace"
   [n]
   (filter ifn? (ns-publics n)))
+
+
 
 
 
