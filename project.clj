@@ -1,4 +1,4 @@
-(defproject routegen "0.1.2"
+(defproject routegen "0.1.3"
   :description "Generates HTTP routes for public functions in a namespace"
   :url "http://github.com/timothypratley/routegen"
   :license {:name "Eclipse Public License"
@@ -18,6 +18,8 @@
             [codox "0.6.6"]
             [lein-ancient "0.5.1"]]
   :codox {:include routegen.core})
+
+
 
 
 
