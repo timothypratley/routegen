@@ -1,6 +1,7 @@
 (ns routegen.private
   "Implementation details, do not refer"
   (:require [clojure.edn]
+            [ring.util.codec :as codec]
             [noir.response :refer [content-type status]]
             [noir.session :as session]
             [clojure.data.csv :refer [write-csv]]
@@ -146,7 +147,8 @@
                     (= (count params) (count %)))
         arglist (first (filter match arglists))
         args (map params (map keyword arglist))
-        parsed (map err-parse args arglist)
+        decoded (map codec/url-decode args)
+        parsed (map err-parse decoded arglist)
         parse-errors (map last parsed)
         parse-vals (map first parsed)
         error (cond
@@ -161,5 +163,7 @@
   "Get the public functions of a namespace"
   [n]
   (filter fn? (ns-publics n)))
+
+
 
 
