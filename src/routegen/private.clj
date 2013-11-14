@@ -119,8 +119,10 @@
 (defn call
   "Calls f with arguments taken from the request parameters.
   Returns a 400 with a helpful error message if params do not match."
-  [f fmt request]
-  (let [params (dissoc (request :params) :tqx)
+  [f fmt request body-decoder]
+  (let [params (merge
+                (dissoc (request :params) :tqx)
+                (body-decoder (request :body)))
         request-arity (count (keys params))
         arglists (-> f meta :arglists)
         match #(and (if params
@@ -145,6 +147,8 @@
   "Get the public functions of a namespace"
   [n]
   (filter ifn? (ns-publics n)))
+
+
 
 
 
