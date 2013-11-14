@@ -17,18 +17,22 @@
         fmt [#'json #'datasource #'csv]
         :let [route (str "/" (-> fmt meta :name) "/" service-name)]]
     (POST route request
-          (call service request fmt))))
+          (call service fmt request))))
 
 (defn path-routes
   "Returns service routes where arguments are passed in the url path."
-  [rest-ns]
-  (for [[service-name service] (functions rest-ns)
+  [service-ns]
+  (for [[service-name service] (functions service-ns)
         fmt [#'json #'datasource #'csv]
         arglist (-> service meta :arglists)
         :let [route (str "/" (-> fmt meta :name)
                          "/" service-name (when (seq arglist) "/")
                          (clojure.string/join "/" (map keyword arglist)))]]
       (GET route request
-           (call service request fmt))))
+           (call service fmt request))))
+
+
+
+
 
 

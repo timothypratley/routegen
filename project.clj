@@ -1,4 +1,4 @@
-(defproject routegen "0.1.0"
+(defproject routegen "0.1.2"
   :description "Generates HTTP routes for public functions in a namespace"
   :url "http://github.com/timothypratley/routegen"
   :license {:name "Eclipse Public License"
@@ -15,5 +15,11 @@
                  [org.clojure/data.csv "0.1.2"]]
   :profiles {:dev {:dependencies [[midje "1.5.1"]]}}
   :plugins [[lein-midje "3.0.0"]
-            [lein-ancient "0.5.1"]])
+            [codox "0.6.6"]
+            [lein-ancient "0.5.1"]]
+  :codox {:include routegen.core})
+
+
+
+
 
