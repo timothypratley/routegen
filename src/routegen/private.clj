@@ -2,10 +2,8 @@
   "Implementation details, do not refer"
   (:require [clojure.edn]
             [noir.response :refer [content-type status]]
-            [noir.session :as session]
             [clojure.data.csv :refer [write-csv]]
             [cheshire.custom :as custom]
-            [slingshot.slingshot :refer [try+]]
             [clj-time.format :refer [unparse formatter]]
             [clj-time.core :refer [year month day now]]))
 
@@ -143,6 +141,8 @@
   "Get the public functions of a namespace"
   [n]
   (filter ifn? (ns-publics n)))
+
+
 
 
 

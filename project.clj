@@ -10,7 +10,6 @@
                  [lib-noir "0.7.2"]
                  [cheshire "5.2.0"]
                  [clj-http-lite "0.2.0"]
-                 [slingshot "0.10.3"]
                  [clj-time "0.6.0"]
                  [org.clojure/data.csv "0.1.2"]]
   :profiles {:dev {:dependencies [[midje "1.5.1"]]}}
@@ -18,6 +17,10 @@
             [codox "0.6.6"]
             [lein-ancient "0.5.1"]]
   :codox {:include routegen.core})
+
+
+
+
 
 
 
