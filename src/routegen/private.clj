@@ -1,6 +1,7 @@
 (ns routegen.private
   "Implementation details, do not refer"
   (:require [clojure.edn]
+            [ring.util.codec :as codec]
             [noir.response :refer [content-type status]]
             [clojure.data.csv :refer [write-csv]]
             [cheshire.custom :as custom]
@@ -116,8 +117,10 @@
 (defn call
   "Calls f with arguments taken from the request parameters.
   Returns a 400 with a helpful error message if params do not match."
-  [f fmt request]
-  (let [params (dissoc (request :params) :tqx)
+  [f fmt request body-decoder]
+  (let [params (merge
+                (dissoc (request :params) :tqx)
+                (body-decoder (request :body)))
         request-arity (count (keys params))
         arglists (-> f meta :arglists)
         match #(and (if params
@@ -126,7 +129,8 @@
                     (= (count params) (count %)))
         arglist (first (filter match arglists))
         args (map params (map keyword arglist))
-        parsed (map err-parse args arglist)
+        decoded (map codec/url-decode args)
+        parsed (map err-parse decoded arglist)
         parse-errors (map last parsed)
         parse-vals (map first parsed)
         error (cond
@@ -148,4 +152,6 @@
 
 
 
-
+
+
+
