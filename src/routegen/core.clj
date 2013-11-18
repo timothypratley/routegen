@@ -14,7 +14,7 @@
   "Returns service routes with arguments passed as parameters.
   Optionally supply a body-decoder function which will deserialize additional arguments to a hashmap."
   ([service-ns]
-   (post-routes service-ns (fn ignore-body [x] nil)))
+   (post-routes service-ns ignore-body))
   ([service-ns body-decoder]
    (for [[service-name service] (functions service-ns)
          fmt [#'json #'datasource #'csv]
@@ -32,6 +32,6 @@
                          "/" service-name (when (seq arglist) "/")
                          (clojure.string/join "/" (map keyword arglist)))]]
       (GET route request
-           (call service fmt request))))
+           (call service fmt request ignore-body))))
 
 

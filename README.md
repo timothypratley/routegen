@@ -5,7 +5,7 @@ Routegen makes exposing webservices simpler.
 
 ## Usage
 
-Add `[routegen "0.1.2"]` to your project.clj `:dependencies`
+Add `[routegen "0.1.3"]` to your project.clj `:dependencies`
 
 ```clojure
 (def app-routes
@@ -35,6 +35,8 @@ Copyright © 2013 Timothy Pratley
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
+
+
 
 
 

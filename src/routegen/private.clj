@@ -146,12 +146,8 @@
   [n]
   (filter ifn? (ns-publics n)))
 
+(defn ignore-body
+  [x]
+  nil)
 
-
-
-
-
-
-
-
-
+
