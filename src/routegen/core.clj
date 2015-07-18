@@ -33,5 +33,3 @@
                          (clojure.string/join "/" (map keyword arglist)))]]
       (GET route request
            (call service fmt request ignore-body))))
-
-

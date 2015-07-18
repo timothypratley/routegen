@@ -1,30 +1,23 @@
 (ns routegen.private-test
-  (:require [midje.sweet :refer :all]
+  (:require [clojure.test :refer :all]
             [routegen.private :refer :all]))
 
 
 (defn foo [^Integer x] (inc x))
 
-(facts "about routegen private"
-       (fact (doc-str #'inc) => string?)
-       (fact (parse "2") => 2)
-       (fact (parse "2" Integer) => 2)
-       (fact (parse "2" Double) => 2.0)
-       (fact (parse "true" Boolean) => true)
-       (fact (parse "false" Boolean) => false)
-       (fact (parse "this is a string") => string?)
-       (fact (type (clojure.edn/read-string "this is a string")) => clojure.lang.Symbol)
-       (fact (parse "ad1" Integer) => (throws Exception))
-       (fact (err-parse "ad1" (-> #'foo meta :arglists first first)) => (comp string? second))
-       (fact (call #'foo (fn [request content] content) {:params {:x "1"}} identity) => 2)
-       (fact (call #'foo (fn [request content] content) {:body {:x "1"}} identity) => 2)
-       (fact (let [f #'inc] (:doc (meta f))) => string?)
-       (fact (-> #'foo meta :arglists first first meta :tag) => 'Integer)
-       (fact (-> #'inc meta) => map?))
-
-
-
-
-
-
-
+(deftest about-routegen-private
+  (is (string? (doc-str #'inc)))
+  (is (= 2 (parse "2")))
+  (is (= 2 (parse "2" Integer)))
+  (is (= 2.0 (parse "2" Double)))
+  (is (= true (parse "true" Boolean)))
+  (is (= false (parse "false" Boolean)))
+  (is (string? (parse "this is a string")))
+  (is (= clojure.lang.Symbol (type (clojure.edn/read-string "this is a string"))))
+  (is (thrown? Exception (parse "ad1" Integer)))
+  (is (string? (second (err-parse "ad1" (-> #'foo meta :arglists first first)))))
+  (is (= 2 (call #'foo (fn [request content] content) {:params {:x "1"}} identity)))
+  (is (= 2 (call #'foo (fn [request content] content) {:body {:x "1"}} identity)))
+  (is (string? (let [f #'inc] (:doc (meta f)))))
+  (is (= 'Integer (-> #'foo meta :arglists first first meta :tag)))
+  (is (map? (-> #'inc meta))))
